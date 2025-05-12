@@ -102,6 +102,13 @@ windB = 1;%初始风速
 wind = [Bcenters(windB);Bcenters(windB);Bcenters(windB);Bcenters(windB)];
 Lreal = busLoad;
 SystemEDNS = 0;SystemDNS = [];LOLP = 0;LOLF = 0;
+
+% 初始化计时器和进度显示
+sim_start_time = tic;
+last_display_time = toc(sim_start_time);
+disp('开始蒙特卡洛模拟...')
+disp(['目标变异系数: ', num2str(0.01), ', 最小模拟年数: ', num2str(50)])
+
 tic
 while (VarianceCoefficient> 0.01||s<50)
     % 找到下一个发生状态转换的元件及其转换时间
@@ -157,9 +164,47 @@ while (VarianceCoefficient> 0.01||s<50)
     if t + Dk == 8760
         s = s+1;%年份加一
         t = 0;%重新仿真一年
+
+        % 显示当前进度和统计信息
+
+        % 计算当前可靠性指标（无论s是多少都计算）
+        current_EENS = SystemEDNS/(s+t/8760);
+        current_LOLP = LOLP/(s*8760+t);
+        current_LOLF = LOLF/(s+t/8760);
+
+        % 根据s是否大于等于100，决定显示格式
+        if s >= 100
+            % 显示包含变异系数的进度信息
+            progress_msg = sprintf(['已模拟%d年, 当前变异系数: %.4f (目标: %.4f)\n' ...
+                               '当前EENS: %.2f, LOLP: %.6f, LOLF: %.4f'], ...
+                               s, VarianceCoefficient, 0.01, ...
+                               current_EENS, current_LOLP, current_LOLF);
+        else
+            % 显示不包含变异系数的进度信息
+            progress_msg = sprintf(['已模拟%d年, 最小需模拟年数: %d\n' ...
+                               '当前EENS: %.2f, LOLP: %.6f, LOLF: %.4f'], ...
+                               s, 50, current_EENS, current_LOLP, current_LOLF);
+        end
+        disp(progress_msg)
+        disp('----------------------------------------')
     end
 
 end
+
+% 显示模拟完成信息和总耗时
+total_sim_time = toc(sim_start_time);
+if total_sim_time > 3600
+    time_str = sprintf('%.2f小时', total_sim_time/3600);
+elseif total_sim_time > 60
+    time_str = sprintf('%.2f分钟', total_sim_time/60);
+else
+    time_str = sprintf('%.2f秒', total_sim_time);
+end
+disp('----------------------------------------')
+disp('蒙特卡洛模拟完成')
+disp(['总模拟时间: ', time_str])
+disp(['总模拟年数: ', num2str(s)])
+disp('----------------------------------------')
 
 disp('MC year')
 disp(s)
