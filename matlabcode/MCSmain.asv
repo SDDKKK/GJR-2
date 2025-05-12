@@ -2,14 +2,25 @@ clear
 clc
 %%数据导入
 warning('off')
-gen = readtable('E:\复现2\RTS-GMLC\RTS_Data\SourceData\gen.csv');
-branch = readtable('E:\复现2\RTS-GMLC\RTS_Data\SourceData\branch.csv');
-dc_branch = readtable('E:\复现2\RTS-GMLC\RTS_Data\SourceData\dc_branch.csv');
-bus = readtable('E:\复现2\RTS-GMLC\RTS_Data\SourceData\bus.csv');
+% 获取当前脚本的完整路径
+current_script_path = mfilename('fullpath');
+% 获取当前脚本所在的目录
+[current_dir, ~, ~] = fileparts(current_script_path);
+% 获取项目根目录（当前目录的上一级）
+project_root = fileparts(current_dir);
+% 构建数据目录的路径
+source_data_dir = fullfile(project_root, 'RTS-GMLC', 'RTS_Data', 'SourceData');
 
-load('windstates.mat');
-load('p.mat');
-load('power.mat');
+% 使用相对路径读取数据文件
+gen = readtable(fullfile(source_data_dir, 'gen.csv'));
+branch = readtable(fullfile(source_data_dir, 'branch.csv'));
+dc_branch = readtable(fullfile(source_data_dir, 'dc_branch.csv'));
+bus = readtable(fullfile(source_data_dir, 'bus.csv'));
+
+% 使用相对路径加载本地mat文件
+load(fullfile(current_dir, 'windstates.mat'));
+load(fullfile(current_dir, 'p.mat'));
+load(fullfile(current_dir, 'power.mat'));
 
 %% 数据处理
 %减去储能；加入一条直流支路
@@ -133,7 +144,7 @@ while (VarianceCoefficient> 0.01||s<500)
         VarianceCoefficient = sqrt(EENS_var)/EENS_mean;
     end
 
-    
+
     r = rand;% 切换机组线路状态
     if state(TranstionElementIndex,1) == 0
         statetime(TranstionElementIndex,1) = ceil(-log(r)./Fail(TranstionElementIndex,1));
@@ -141,7 +152,7 @@ while (VarianceCoefficient> 0.01||s<500)
         statetime(TranstionElementIndex,1) = MTTR(TranstionElementIndex,1);
     end
     state(TranstionElementIndex,1) = 1-state(TranstionElementIndex,1);
-    
+
     t = t + Dk;
     if t + Dk == 8760
         s = s+1;%年份加一

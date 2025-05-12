@@ -3,41 +3,49 @@ clear;clc;
 warning('off');n = 12;
 %% 读取数据
 
-Boise_2007 = readtable('E:\复现2\matlabcode\data2\Boise\Boise_2007.csv');
-Boise_2008 = readtable('E:\复现2\matlabcode\data2\Boise\Boise_2008.csv');
-Boise_2009 = readtable('E:\复现2\matlabcode\data2\Boise\Boise_2009.csv');
-Boise_2010 = readtable('E:\复现2\matlabcode\data2\Boise\Boise_2010.csv');
-Boise_2011 = readtable('E:\复现2\matlabcode\data2\Boise\Boise_2011.csv');
-Boise_2012 = readtable('E:\复现2\matlabcode\data2\Boise\Boise_2012.csv');
-Boise_2013 = readtable('E:\复现2\matlabcode\data2\Boise\Boise_2013.csv');
-Boise_2014 = readtable('E:\复现2\matlabcode\data2\Boise\Boise_2014.csv');
+% 获取当前脚本的完整路径
+current_script_path = mfilename('fullpath');
+% 获取当前脚本所在的目录
+[current_dir, ~, ~] = fileparts(current_script_path);
+% 构建风速数据目录的路径
+wind_data_dir = fullfile(current_dir, 'data2');
+
+% 使用相对路径读取数据文件
+Boise_2007 = readtable(fullfile(wind_data_dir, 'Boise', 'Boise_2007.csv'));
+Boise_2008 = readtable(fullfile(wind_data_dir, 'Boise', 'Boise_2008.csv'));
+Boise_2009 = readtable(fullfile(wind_data_dir, 'Boise', 'Boise_2009.csv'));
+Boise_2010 = readtable(fullfile(wind_data_dir, 'Boise', 'Boise_2010.csv'));
+Boise_2011 = readtable(fullfile(wind_data_dir, 'Boise', 'Boise_2011.csv'));
+Boise_2012 = readtable(fullfile(wind_data_dir, 'Boise', 'Boise_2012.csv'));
+Boise_2013 = readtable(fullfile(wind_data_dir, 'Boise', 'Boise_2013.csv'));
+Boise_2014 = readtable(fullfile(wind_data_dir, 'Boise', 'Boise_2014.csv'));
 
 Boise_all = [Boise_2007.windSpeedAt80m_m_s_;Boise_2008.windSpeedAt80m_m_s_;Boise_2009.windSpeedAt80m_m_s_;
     Boise_2010.windSpeedAt80m_m_s_;Boise_2011.windSpeedAt80m_m_s_;Boise_2012.windSpeedAt80m_m_s_;
     Boise_2013.windSpeedAt80m_m_s_;Boise_2014.windSpeedAt80m_m_s_];
 % Boise_all = Boise_all';
-CO_2007 = readtable('E:\复现2\matlabcode\data2\CO\CO_2007.csv');
-CO_2008 = readtable('E:\复现2\matlabcode\data2\CO\CO_2008.csv');
-CO_2009 = readtable('E:\复现2\matlabcode\data2\CO\CO_2009.csv');
-CO_2010 = readtable('E:\复现2\matlabcode\data2\CO\CO_2010.csv');
-CO_2011 = readtable('E:\复现2\matlabcode\data2\CO\CO_2011.csv');
-CO_2012 = readtable('E:\复现2\matlabcode\data2\CO\CO_2012.csv');
-CO_2013 = readtable('E:\复现2\matlabcode\data2\CO\CO_2013.csv');
-CO_2014 = readtable('E:\复现2\matlabcode\data2\CO\CO_2014.csv');
+CO_2007 = readtable(fullfile(wind_data_dir, 'CO', 'CO_2007.csv'));
+CO_2008 = readtable(fullfile(wind_data_dir, 'CO', 'CO_2008.csv'));
+CO_2009 = readtable(fullfile(wind_data_dir, 'CO', 'CO_2009.csv'));
+CO_2010 = readtable(fullfile(wind_data_dir, 'CO', 'CO_2010.csv'));
+CO_2011 = readtable(fullfile(wind_data_dir, 'CO', 'CO_2011.csv'));
+CO_2012 = readtable(fullfile(wind_data_dir, 'CO', 'CO_2012.csv'));
+CO_2013 = readtable(fullfile(wind_data_dir, 'CO', 'CO_2013.csv'));
+CO_2014 = readtable(fullfile(wind_data_dir, 'CO', 'CO_2014.csv'));
 
 CO_all = [CO_2007.windSpeedAt80m_m_s_;CO_2008.windSpeedAt80m_m_s_;CO_2009.windSpeedAt80m_m_s_;
     CO_2010.windSpeedAt80m_m_s_;CO_2011.windSpeedAt80m_m_s_;CO_2012.windSpeedAt80m_m_s_;
     CO_2013.windSpeedAt80m_m_s_;CO_2014.windSpeedAt80m_m_s_];
 % CO_all = CO_all';
 
-Fort_2007 = readtable('E:\复现2\matlabcode\data2\Fort\Fort_2007.csv');
-Fort_2008 = readtable('E:\复现2\matlabcode\data2\Fort\Fort_2008.csv');
-Fort_2009 = readtable('E:\复现2\matlabcode\data2\Fort\Fort_2009.csv');
-Fort_2010 = readtable('E:\复现2\matlabcode\data2\Fort\Fort_2010.csv');
-Fort_2011 = readtable('E:\复现2\matlabcode\data2\Fort\Fort_2011.csv');
-Fort_2012 = readtable('E:\复现2\matlabcode\data2\Fort\Fort_2012.csv');
-Fort_2013 = readtable('E:\复现2\matlabcode\data2\Fort\Fort_2013.csv');
-Fort_2014 = readtable('E:\复现2\matlabcode\data2\Fort\Fort_2014.csv');
+Fort_2007 = readtable(fullfile(wind_data_dir, 'Fort', 'Fort_2007.csv'));
+Fort_2008 = readtable(fullfile(wind_data_dir, 'Fort', 'Fort_2008.csv'));
+Fort_2009 = readtable(fullfile(wind_data_dir, 'Fort', 'Fort_2009.csv'));
+Fort_2010 = readtable(fullfile(wind_data_dir, 'Fort', 'Fort_2010.csv'));
+Fort_2011 = readtable(fullfile(wind_data_dir, 'Fort', 'Fort_2011.csv'));
+Fort_2012 = readtable(fullfile(wind_data_dir, 'Fort', 'Fort_2012.csv'));
+Fort_2013 = readtable(fullfile(wind_data_dir, 'Fort', 'Fort_2013.csv'));
+Fort_2014 = readtable(fullfile(wind_data_dir, 'Fort', 'Fort_2014.csv'));
 
 Fort_all = [Fort_2007.windSpeedAt80m_m_s_;Fort_2008.windSpeedAt80m_m_s_;Fort_2009.windSpeedAt80m_m_s_;
     Fort_2010.windSpeedAt80m_m_s_;Fort_2011.windSpeedAt80m_m_s_;Fort_2012.windSpeedAt80m_m_s_;
@@ -73,7 +81,7 @@ options = fcmOptions(NumClusters=n, ...
 [maxBU,IB] = max(BU);
 
 %保存数据
-save("windstates.mat", "Fcenters", "Ccenters","Bcenters","IF","IC","IB");
+save(fullfile(current_dir, "windstates.mat"), "Fcenters", "Ccenters","Bcenters","IF","IC","IB");
 %% 计算状态概率转移矩阵
 function p = state(I,n)
 T = zeros(n,n);
@@ -104,4 +112,4 @@ end
 pF = state(IF,n);
 pC = state(IC,n);
 pB = state(IB,n);
-save("p.mat", "pF", "pC","pB");
+save(fullfile(current_dir, "p.mat"), "pF", "pC","pB");
