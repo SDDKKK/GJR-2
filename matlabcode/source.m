@@ -1,19 +1,10 @@
 warning('off');
-% 获取当前脚本的完整路径
-current_script_path = mfilename('fullpath');
-% 获取当前脚本所在的目录
-[current_dir, ~, ~] = fileparts(current_script_path);
-% 获取项目根目录（当前目录的上一级）
-project_root = fileparts(current_dir);
-% 构建时间序列数据目录的路径
-timeseries_dir = fullfile(project_root, 'RTS-GMLC', 'RTS_Data', 'timeseries_data_files');
-
-% 使用相对路径读取数据文件
-Hydro = readmatrix(fullfile(timeseries_dir, 'Hydro', 'REAL_TIME_hydro.csv'));
-PV = readmatrix(fullfile(timeseries_dir, 'PV', 'REAL_TIME_pv.csv'));
-CSP = readmatrix(fullfile(timeseries_dir, 'CSP', 'REAL_TIME_Natural_Inflow.csv'));
-RTPV = readmatrix(fullfile(timeseries_dir, 'RTPV', 'REAL_TIME_rtpv.csv'));
-Load = readmatrix(fullfile(timeseries_dir, 'Load', 'REAL_TIME_regional_Load.csv'));
+Hydro = readmatrix('E:\复现2\RTS-GMLC\RTS_Data\timeseries_data_files\Hydro\REAL_TIME_hydro.csv');
+PV = readmatrix('E:\复现2\RTS-GMLC\RTS_Data\timeseries_data_files\PV\REAL_TIME_pv.csv');
+CSP = readmatrix('E:\复现2\RTS-GMLC\RTS_Data\timeseries_data_files\CSP\REAL_TIME_Natural_Inflow.csv');
+RTPV = readmatrix('E:\复现2\RTS-GMLC\RTS_Data\timeseries_data_files\RTPV\REAL_TIME_rtpv.csv');
+WIND = readmatrix('E:\复现2\RTS-GMLC\RTS_Data\timeseries_data_files\WIND\REAL_TIME_wind.csv');
+Load = readmatrix('E:\复现2\RTS-GMLC\RTS_Data\timeseries_data_files\Load\REAL_TIME_regional_Load.csv');
 Load = Load(1:end,:);
 %% 处理为1h步长
 
@@ -29,12 +20,12 @@ for k = 1:8760
 end
 end
 
-HydroP = sumtoh(Hydro,5,24);
-CSPP = sumtoh(CSP,5,5);
-PVP = sumtoh(PV,5,29);
-RTPVP = sumtoh(RTPV,5,35);
-Load = sumtoh(Load,5,7);
+HydroP = sumtoh(Hydro,5,24)./12;
+CSPP = sumtoh(CSP,5,5)./12;
+PVP = sumtoh(PV,5,29)./12;
+RTPVP = sumtoh(RTPV,5,35)./12;
+WIND = sumtoh(WIND,5,8)./12;
+Load = sumtoh(Load,5,7)./12;
 %% 保存
 
-% 使用相对路径保存mat文件
-save(fullfile(current_dir, "power.mat"), "HydroP", "CSPP","PVP","RTPVP","Load");
+save("power.mat", "HydroP", "CSPP","PVP","RTPVP","Load","WIND");
